@@ -9,17 +9,14 @@ import java.util.Timer;
 public class Turno extends javax.swing.JFrame {
 
     ArrayList<Afiliados> lista = new ArrayList<>();;
+    ArrayList<Afiliados> lista_prio = new ArrayList();
     Afiliados paciente[] = new Afiliados[1000]; 
     int turno_insc = 1;
     int tiempo, llam_turno = 1;
+    int tiempo_Prio,llam_turno_prio = 1;
     Timer timer = new Timer();
-    String nombres[] = new String[]{"juan", "elver","elpi","alam"};
-    String apellidos[] = new String[]{"ito", "galarga","togrande","brito","gei"};
-    String plan[] = new String[]{"pos","pc"};
-    
+    Timer timer_prio = new Timer();
     public Turno() {
-        this.lista = new ArrayList<>();
-        this.paciente = new Afiliados[1000];
         initComponents();
         TimerTask tiempo_rest = new TimerTask() {
             @Override
@@ -28,9 +25,9 @@ public class Turno extends javax.swing.JFrame {
                     Nombre_Completo.setText("Nombre: " + lista.get(llam_turno - 1).getNombre() + " " + lista.get(llam_turno - 1).getApellido());
                     Afiliacion.setText("Afiliación: " + Plan_Comp.getSelectedItem().toString()); 
                     Label_turno.setText("" +  llam_turno);  
-                if("1".equals(Tiempo.getText())){
-                    llam_turno++;                                                                                             
-                }
+                    if("1".equals(Tiempo.getText())){
+                        llam_turno++;                                                                                             
+                    }
                 tiempo = Integer.parseInt(Tiempo.getText());  
                 Tiempo.setText(""+ tiempo--);
                 Tiempo.setText("1".equals(Tiempo.getText()) ? "5": "" + tiempo--);
@@ -40,7 +37,27 @@ public class Turno extends javax.swing.JFrame {
                     }
                 }
             };
+        TimerTask tiempo_rest_prio = new TimerTask() {
+            @Override
+            public void run() { 
+                if(llam_turno_prio <= lista_prio.size()){
+                    Nombre_Completo_Prio.setText("Nombre: " + lista_prio.get(llam_turno_prio - 1).getNombre() + " " + lista_prio.get(llam_turno_prio - 1).getApellido());
+                    Afiliacion_Prio.setText("Afiliación: " + Plan_Comp.getSelectedItem().toString()); 
+                    Label_turno_Prio.setText("" +  llam_turno_prio);  
+                    if("1".equals(Tiempo_Prio.getText())){
+                        llam_turno_prio++;                                                                                             
+                    }
+                tiempo_Prio = Integer.parseInt(Tiempo_Prio.getText());  
+                Tiempo_Prio.setText(""+ tiempo_Prio--);
+                Tiempo_Prio.setText("1".equals(Tiempo_Prio.getText()) ? "5": "" + tiempo_Prio--);
+                }else{
+                    Nombre_Completo_Prio.setText("Nombre: " );
+                    Afiliacion_Prio.setText("Afiliación: " );
+                    }
+                }
+            };
             timer.scheduleAtFixedRate(tiempo_rest, 1000, 1000);
+            timer_prio.scheduleAtFixedRate(tiempo_rest_prio, 1000, 1000);
         
     }
 
@@ -62,6 +79,14 @@ public class Turno extends javax.swing.JFrame {
         Ext_tiempo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         Tiempo = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        Label_turno_Prio = new javax.swing.JLabel();
+        Nombre_Completo_Prio = new javax.swing.JLabel();
+        Afiliacion_Prio = new javax.swing.JLabel();
+        Ext_tiempo_Prio = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        Tiempo_Prio = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -123,6 +148,50 @@ public class Turno extends javax.swing.JFrame {
 
         Tiempo.setText("5");
 
+        jPanel4.setBackground(new java.awt.Color(0, 102, 255));
+        jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        Label_turno_Prio.setBackground(new java.awt.Color(255, 255, 255));
+        Label_turno_Prio.setFont(new java.awt.Font("SWRomnc", 1, 28)); // NOI18N
+        Label_turno_Prio.setForeground(new java.awt.Color(255, 255, 255));
+        Label_turno_Prio.setText("0");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(Label_turno_Prio)
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Label_turno_Prio)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        Nombre_Completo_Prio.setText("Nombre:");
+
+        Afiliacion_Prio.setText("Afiliación:");
+
+        Ext_tiempo_Prio.setBackground(new java.awt.Color(204, 204, 204));
+        Ext_tiempo_Prio.setForeground(new java.awt.Color(51, 51, 51));
+        Ext_tiempo_Prio.setText("Más Tiempo");
+        Ext_tiempo_Prio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Ext_tiempo_PrioActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Tiempo restante:");
+
+        Tiempo_Prio.setText("5");
+
+        jLabel9.setText("Prioritarios");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -133,37 +202,62 @@ public class Turno extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Tiempo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Ext_tiempo)
-                        .addGap(54, 54, 54))
+                        .addComponent(Tiempo))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Nombre_Completo)
+                    .addComponent(Afiliacion)
+                    .addComponent(Ext_tiempo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Afiliacion)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Nombre_Completo)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Tiempo_Prio)
+                        .addGap(73, 73, 73))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Nombre_Completo_Prio)
+                            .addComponent(Afiliacion_Prio)
+                            .addComponent(Ext_tiempo_Prio)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel9)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Nombre_Completo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Afiliacion))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(Ext_tiempo)
-                    .addComponent(Tiempo))
-                .addContainerGap(28, Short.MAX_VALUE))
+                        .addComponent(Afiliacion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(Tiempo))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Ext_tiempo))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(jLabel9)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Nombre_Completo_Prio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Afiliacion_Prio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(Tiempo_Prio))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Ext_tiempo_Prio)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -306,7 +400,7 @@ public class Turno extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -334,13 +428,21 @@ public class Turno extends javax.swing.JFrame {
         paciente[turno_insc-1] = new Afiliados(Integer.parseInt(Edad.getText()), Nombre.getText(), 
                 Apellido.getText(), Plan_Comp.getSelectedItem().toString(),
                 !"Ninguno".equals(Condicion_esp.getSelectedItem().toString()));
-        lista.add(paciente[turno_insc-1]);
+        if(Integer.parseInt(this.Edad.getText()) < 12 || !"Ninguno".equals(Condicion_esp.getSelectedItem().toString())
+                || "PC".equals(Plan_Comp.getSelectedItem().toString())){
+            lista_prio.add(paciente[turno_insc-1]);
+        }else
+            lista.add(paciente[turno_insc-1]);
         turno_insc++;
         Apellido.setText("");
         Edad.setText("");
         Nombre.setText("");
         Turn_label.setText("Turno: " + turno_insc);
     }//GEN-LAST:event_EnviarActionPerformed
+
+    private void Ext_tiempo_PrioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ext_tiempo_PrioActionPerformed
+        Tiempo_Prio.setText("5");
+    }//GEN-LAST:event_Ext_tiempo_PrioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -380,16 +482,21 @@ public class Turno extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Afiliacion;
+    private javax.swing.JLabel Afiliacion_Prio;
     private javax.swing.JTextField Apellido;
     private javax.swing.JComboBox<String> Condicion_esp;
     private javax.swing.JTextField Edad;
     private javax.swing.JButton Enviar;
     private javax.swing.JButton Ext_tiempo;
+    private javax.swing.JButton Ext_tiempo_Prio;
     private javax.swing.JLabel Label_turno;
+    private javax.swing.JLabel Label_turno_Prio;
     private javax.swing.JTextField Nombre;
     private javax.swing.JLabel Nombre_Completo;
+    private javax.swing.JLabel Nombre_Completo_Prio;
     private javax.swing.JComboBox<String> Plan_Comp;
     private javax.swing.JLabel Tiempo;
+    private javax.swing.JLabel Tiempo_Prio;
     private javax.swing.JLabel Turn_label;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -398,8 +505,11 @@ public class Turno extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     // End of variables declaration//GEN-END:variables
 }
