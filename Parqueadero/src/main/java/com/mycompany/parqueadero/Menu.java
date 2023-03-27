@@ -1,20 +1,89 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.parqueadero;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Estudiante
+ * @author julio
  */
 public class Menu extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Menu
-     */
+    
+    DefaultTableModel modelo = new DefaultTableModel();
+    ArrayList<Vehiculo> lista = new ArrayList();
+    Vehiculo vehiculo[] = new Vehiculo[10000]; 
+    int num_vehiculo = 0;
+    LocalDateTime tiempo;
+    private String Ceros(int t) {
+        if(t<10)
+            return "0";
+        return "";
+    }
+    public int valor$(String Tipo_V){
+        if("Bicicleta y Ciclomotores".equals(Tipo_V))
+            return 20;
+        if("Carro".equals(Tipo_V))
+            return 60;
+        return 30;     
+    }
+    public void Llenar_Tabla(){
+         ArrayList<Object> categ = new ArrayList<>();
+         categ.add("# Vehículo");
+         categ.add("Placa");
+         categ.add("Tipo Vehículo");
+         categ.add("Hora Ingreso");
+         categ.add("Valor a Pagar");
+         for(Object columna : categ){
+             modelo.addColumn(columna);
+         }
+         this.Tabla.setModel(modelo);         
+    }
+    public void Fill_Rows(int ruedas){
+        while(Tabla.getRowCount() > 0){
+            modelo.removeRow(0);
+        }
+        ArrayList<Object[]> datos = new ArrayList<>();        
+        for (int c = 0; c < lista.size(); c++) {
+            if(ruedas == 0){
+                datos.add(new Object[]{lista.get(c).getNum_vehiculo(), lista.get(c).getPlaca(), lista.get(c).getTipo_v(),
+                        lista.get(c).getHora() + ":" + lista.get(c).getMinutos(),
+                        "$" + lista.get(c).Minutos_Pagar() * valor$(lista.get(c).getTipo_v())});
+            }else{   
+                if(lista.get(c).Num_rueda() == ruedas ){
+                    datos.add(new Object[]{lista.get(c).getNum_vehiculo(), lista.get(c).getPlaca(), lista.get(c).getTipo_v(),
+                        lista.get(c).getHora() + ":" + lista.get(c).getMinutos(),
+                        "$" + lista.get(c).Minutos_Pagar() * valor$(lista.get(c).getTipo_v())});
+                }
+            }
+        }
+        for(Object[] info  : datos){
+            modelo.addRow(info);         
+        } 
+    }
+    
     public Menu() {
         initComponents();
+        Llenar_Tabla();
+        num_vehiculo = 0;
+        Timer timer = new Timer();
+        TimerTask hora = new TimerTask() {
+            @Override
+            public void run() {
+                tiempo = LocalDateTime.now();
+                Hora.setText(Ceros(tiempo.getHour()) + "" + tiempo.getHour() + ":" + Ceros(tiempo.getMinute()) + "" + tiempo.getMinute());
+            }
+        };
+        timer.scheduleAtFixedRate(hora, 10, 10);
+        Placa.setVisible(false);
+        Tipo_V.setVisible(false);
+        num_vehiculo_label.setVisible(false);
+        Placa_Label.setVisible(false);
+        Tipo_v_Label.setVisible(false);
+        Registrar.setVisible(false);     
+        Auxiliar.setVisible(false);
+        
     }
 
     /**
@@ -26,57 +95,150 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         Ingreso = new javax.swing.JButton();
-        Visualizar = new javax.swing.JButton();
-        V4R = new javax.swing.JButton();
-        Total = new javax.swing.JButton();
-        V2R = new javax.swing.JButton();
+        Ver_Tabla = new javax.swing.JButton();
+        V_4_R = new javax.swing.JButton();
+        V_2_R = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         Eliminar = new javax.swing.JButton();
         Salir = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        Tipo_V = new javax.swing.JComboBox<>();
+        Placa = new javax.swing.JTextField();
+        Placa_Label = new javax.swing.JLabel();
+        Tipo_v_Label = new javax.swing.JLabel();
+        num_vehiculo_label = new javax.swing.JLabel();
+        Hora = new javax.swing.JLabel();
+        Registrar = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        Tabla = new javax.swing.JTable();
+        Auxiliar = new javax.swing.JLabel();
+
+        jButton2.setText("jButton2");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(190, 190, 190));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
-        Ingreso.setBackground(new java.awt.Color(204, 204, 204));
-        Ingreso.setText("Ingresar Vehículo");
+        Ingreso.setBackground(new java.awt.Color(102, 102, 102));
+        Ingreso.setForeground(new java.awt.Color(51, 51, 51));
+        Ingreso.setText("Ingreso Vehículo");
         Ingreso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IngresoActionPerformed(evt);
             }
         });
 
-        Visualizar.setBackground(new java.awt.Color(204, 204, 204));
-        Visualizar.setText("Visualizar Tabla");
-        Visualizar.addActionListener(new java.awt.event.ActionListener() {
+        Ver_Tabla.setBackground(new java.awt.Color(102, 102, 102));
+        Ver_Tabla.setForeground(new java.awt.Color(51, 51, 51));
+        Ver_Tabla.setText("Visualizar Tabla");
+        Ver_Tabla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VisualizarActionPerformed(evt);
+                Ver_TablaActionPerformed(evt);
             }
         });
 
-        V4R.setBackground(new java.awt.Color(204, 204, 204));
-        V4R.setText("Vehículo 4 Ruedas");
+        V_4_R.setBackground(new java.awt.Color(102, 102, 102));
+        V_4_R.setForeground(new java.awt.Color(51, 51, 51));
+        V_4_R.setText("Vehículos 4 Ruedas");
+        V_4_R.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                V_4_RActionPerformed(evt);
+            }
+        });
 
-        Total.setBackground(new java.awt.Color(204, 204, 204));
-        Total.setText("Total Vehículos/Pagar");
+        V_2_R.setBackground(new java.awt.Color(102, 102, 102));
+        V_2_R.setForeground(new java.awt.Color(51, 51, 51));
+        V_2_R.setText("Vehículos 2 Ruedas");
+        V_2_R.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                V_2_RActionPerformed(evt);
+            }
+        });
 
-        V2R.setBackground(new java.awt.Color(204, 204, 204));
-        V2R.setText("Vehículo 2 Ruedas");
+        jButton1.setBackground(new java.awt.Color(102, 102, 102));
+        jButton1.setForeground(new java.awt.Color(51, 51, 51));
+        jButton1.setText("Total Vehículos/Pagar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        Eliminar.setBackground(new java.awt.Color(204, 204, 204));
+        Eliminar.setBackground(new java.awt.Color(102, 102, 102));
+        Eliminar.setForeground(new java.awt.Color(51, 51, 51));
         Eliminar.setText("Eliminar Vehículo");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarActionPerformed(evt);
+            }
+        });
 
-        Salir.setBackground(new java.awt.Color(204, 204, 204));
+        Salir.setBackground(new java.awt.Color(102, 102, 102));
+        Salir.setForeground(new java.awt.Color(51, 51, 51));
         Salir.setText("Salir");
+        Salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vehículo de 4 Ruedas", "Vehículo de 2 Ruedas" }));
+        Tipo_V.setBackground(new java.awt.Color(204, 204, 204));
+        Tipo_V.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Carro", "Moto", "Bicicleta y Ciclomotores" }));
 
-        jScrollPane1.setViewportView(jTextPane1);
+        Placa.setBackground(new java.awt.Color(153, 153, 153));
+        Placa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PlacaActionPerformed(evt);
+            }
+        });
+
+        Placa_Label.setText("Placa");
+
+        Tipo_v_Label.setText("Tipo de Vehículo");
+
+        num_vehiculo_label.setText("# Vehículo: 1");
+
+        Hora.setText("jLabel1");
+
+        Registrar.setBackground(new java.awt.Color(102, 102, 102));
+        Registrar.setText("Registrar");
+        Registrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarActionPerformed(evt);
+            }
+        });
+
+        Tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(Tabla);
+
+        Auxiliar.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -86,53 +248,86 @@ public class Menu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Placa, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(V2R, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(Total, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(V4R, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(Salir))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Eliminar)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(Visualizar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(Ingreso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(19, 19, 19)
+                                .addComponent(Placa_Label)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(Tipo_V, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(Tipo_v_Label)
+                                .addGap(77, 77, 77)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Registrar)
+                            .addComponent(num_vehiculo_label))
+                        .addContainerGap(34, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(Ver_Tabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Eliminar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Ingreso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(V_2_R, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(V_4_R, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(44, 44, 44))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Hora)
+                .addGap(65, 65, 65))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(Salir)
+                        .addGap(52, 52, 52)
+                        .addComponent(Auxiliar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Total)
-                    .addComponent(Ingreso))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(V4R)
-                    .addComponent(Visualizar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(V2R)
-                    .addComponent(Eliminar))
-                .addGap(18, 18, 18)
-                .addComponent(Salir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(Hora)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Ingreso)
+                    .addComponent(V_2_R))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Eliminar)
+                    .addComponent(V_4_R))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Ver_Tabla)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Tipo_V, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Placa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(num_vehiculo_label))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Placa_Label)
+                        .addComponent(Tipo_v_Label))
+                    .addComponent(Registrar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Salir)
+                    .addComponent(Auxiliar))
+                .addGap(10, 10, 10))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -149,13 +344,77 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void IngresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresoActionPerformed
+    private void Ver_TablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ver_TablaActionPerformed
+        Fill_Rows(0);        
+        Tabla.setModel(modelo);
+        Auxiliar.setVisible(false);
+    }//GEN-LAST:event_Ver_TablaActionPerformed
+
+    private void V_4_RActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_V_4_RActionPerformed
+        Fill_Rows(4);
+        Tabla.setModel(modelo);
+        Auxiliar.setVisible(false);
+    }//GEN-LAST:event_V_4_RActionPerformed
+
+    private void V_2_RActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_V_2_RActionPerformed
+        Tabla.setModel(modelo);
+        Auxiliar.setVisible(false);
+        Fill_Rows(2);
+    }//GEN-LAST:event_V_2_RActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int total_pagos = 0;
+        for(int c = 0; c < lista.size(); c++){
+            total_pagos += (lista.get(c).Minutos_Pagar() * valor$(lista.get(c).getTipo_v()));
+        }
+        Auxiliar.setText("Numero de vehículos: " +  lista.size() + "   Total pagos: $" + total_pagos );
+        Auxiliar.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void PlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlacaActionPerformed
         // TODO add your handling code here:
+    }//GEN-LAST:event_PlacaActionPerformed
+
+    private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SalirActionPerformed
+
+    private void IngresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresoActionPerformed
+        Placa.setVisible(true);
+        Tipo_V.setVisible(true);
+        Registrar.setVisible(true);
+        num_vehiculo_label.setVisible(true);
+        Registrar.setText("Registrar");
+        Auxiliar.setVisible(false);
     }//GEN-LAST:event_IngresoActionPerformed
 
-    private void VisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VisualizarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_VisualizarActionPerformed
+    private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
+        if("Registrar".equals(Registrar.getText())){
+            num_vehiculo++;
+            vehiculo[num_vehiculo-1] = new Vehiculo(tiempo.getHour(),tiempo.getMinute(),Placa.getText(),Tipo_V.getSelectedItem().toString(),num_vehiculo);
+            num_vehiculo_label.setText("# Vehículo: " + num_vehiculo);
+            Tipo_V.setVisible(false);
+            num_vehiculo_label.setVisible(false);
+            lista.add(vehiculo[num_vehiculo-1]);
+        }else{
+            for(int c = 0; c < lista.size(); c++){
+                if(lista.get(c).getPlaca().equals(Placa.getText()))
+                    lista.remove(c);
+            }         
+        }
+        Registrar.setVisible(false);
+        Placa.setVisible(false);
+        Placa_Label.setVisible(false);
+        Placa.setText("");
+    }//GEN-LAST:event_RegistrarActionPerformed
+
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+        Placa_Label.setVisible(true);
+        Placa.setVisible(true);      
+        Registrar.setText("Eliminar");
+        Registrar.setVisible(true);
+        Auxiliar.setVisible(false);
+    }//GEN-LAST:event_EliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,17 +452,26 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Auxiliar;
     private javax.swing.JButton Eliminar;
+    private javax.swing.JLabel Hora;
     private javax.swing.JButton Ingreso;
+    private javax.swing.JTextField Placa;
+    private javax.swing.JLabel Placa_Label;
+    private javax.swing.JButton Registrar;
     private javax.swing.JButton Salir;
-    private javax.swing.JButton Total;
-    private javax.swing.JButton V2R;
-    private javax.swing.JButton V4R;
-    private javax.swing.JButton Visualizar;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTable Tabla;
+    private javax.swing.JComboBox<String> Tipo_V;
+    private javax.swing.JLabel Tipo_v_Label;
+    private javax.swing.JButton V_2_R;
+    private javax.swing.JButton V_4_R;
+    private javax.swing.JButton Ver_Tabla;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel num_vehiculo_label;
     // End of variables declaration//GEN-END:variables
 }
